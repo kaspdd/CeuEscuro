@@ -93,7 +93,7 @@ namespace CeuEscuro.DAL
             try
             {
                 Conectar();
-                cmd = new SqlCommand("SELECT IdUsuario, NomeUsuario, EmailUsuario, SenhaUsuario, DtNascUsuario, DescricaoTipoUsuario FROM Usuario INNER JOIN TipoUsuario ON TipoUsuario_Id = IdTipoUsuario", conn);
+                cmd = new SqlCommand("SELECT IdUsuario, NomeUsuario, EmailUsuario, SenhaUsuario, DtNascUsuario, DescricaoTipoUsuario FROM Usuario INNER JOIN TipoUsuario ON TipoUsuario_Id = IdTipoUsuario;", conn);
 
                 //chamando a variavel dr do tipo de leitura do banco para armazenar os dados do camando acima.
                 dr = cmd.ExecuteReader();
@@ -110,7 +110,7 @@ namespace CeuEscuro.DAL
                     usuario.EmailUsuario = Convert.ToString(dr["EmailUsuario"]);
                     usuario.SenhaUsuario = Convert.ToString(dr["SenhaUsuario"]);
                     usuario.DtNascUsuario = Convert.ToDateTime(dr["DtNascUsuario"]);
-                    usuario.TipoUsuario_Id = Convert.ToString(dr["TipoUsuario_Id"]);
+                    usuario.TipoUsuario_Id = Convert.ToString(dr["DescricaoTipoUsuario"]);
                     //no final ele vai adicionar tudo na lista
                     lista.Add(usuario);
                 }
@@ -268,9 +268,8 @@ namespace CeuEscuro.DAL
 
                 cmd = new SqlCommand("SELECT * FROM TipoUsuario;", conn);
                 dr = cmd.ExecuteReader();
-                cmd.ExecuteNonQuery();
 
-                List <TipoUsuarioDTO> lista = new List<TipoUsuarioDTO>();
+                List<TipoUsuarioDTO> lista = new List<TipoUsuarioDTO>();
                 while (dr.Read())
                 {
                     TipoUsuarioDTO usuario = new TipoUsuarioDTO();
