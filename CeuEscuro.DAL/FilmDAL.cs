@@ -42,7 +42,7 @@ namespace CeuEscuro.DAL
 
 
         }
-
+        //read
         public List<FilmDTO> GetFilms()
         {
             try
@@ -86,7 +86,7 @@ namespace CeuEscuro.DAL
 
 
         }
-
+        //update
         public void Update(FilmDTO filme)
         {
             try
@@ -117,7 +117,7 @@ namespace CeuEscuro.DAL
 
 
         }
-
+        //delete
         public void Delete(int idFilme)
         {
             try
@@ -142,7 +142,7 @@ namespace CeuEscuro.DAL
 
 
         }
-
+        //Search by id
         public FilmDTO SearchByID(int filmeId)
         {
             try
@@ -176,7 +176,7 @@ namespace CeuEscuro.DAL
                 Desconectar();
             }
         }
-
+        //Search by name
         public FilmDTO SearchByName(string filmeTitulo)
         {
             try
@@ -184,7 +184,7 @@ namespace CeuEscuro.DAL
                 Conectar();
 
                 cmd = new SqlCommand("SELECT * FROM Film WHERE TituloFilm = @TituloFilm;", conn);
-                cmd.Parameters.AddWithValue("@TituloFilm", filmeTitulo); 
+                cmd.Parameters.AddWithValue("@TituloFilm", filmeTitulo);
                 dr = cmd.ExecuteReader();
                 FilmDTO filme = new FilmDTO();
                 if (dr.Read())
@@ -210,9 +210,113 @@ namespace CeuEscuro.DAL
                 Desconectar();
             }
         }
+        // filtro
+        public List<FilmDTO> Filter(string generoFilme)
+        {
+            try
+            {
+                Conectar();
+                cmd = new SqlCommand("SELECT IdFilm, TituloFilm, ProdutoraFilm, UrlImgFilm, DescricaoClassificacao , DescricaoGenero  FROM Film INNER JOIN Classificacao ON Classifcacao_Id = IdCLassificacao INNER JOIN Genero ON Genero_Id = IdGenero WHERE DescricaoGenero = @DescricaoGenero;", conn);
+                //atribuindo o compo DescricaoGenero ao parametro generoFilme.
+                cmd.Parameters.AddWithValue("@DescricaoGenero", generoFilme);
 
-       
+                //chamando a variavel dr do tipo de leitura do banco para armazenar os dados do camando acima.
+                dr = cmd.ExecuteReader();
+
+                List<FilmDTO> lista = new List<FilmDTO>();
+
+                //Enquanto o dr continuar lendo os dados do banco
+                while (dr.Read())
+                {
+                    //ele vai adicionar os dados da tabela nos parametros do usuarioDTO
+                    FilmDTO filme = new FilmDTO();
+                    filme.idFilm = Convert.ToInt32(dr["IdFilm"]);
+                    filme.TituloFilm = Convert.ToString(dr["TituloFilm"]);
+                    filme.ProdutoraFilm = Convert.ToString(dr["ProdutoraFilm"]);
+                    filme.UrlImgFilm = Convert.ToString(dr["UrlImgFilm"]);
+                    filme.Classificacao_Id = Convert.ToString(dr["DescricaoClassificacao"]);
+                    filme.Genero_Id = Convert.ToString(dr["DescricaoGenero"]);
+                    //no final ele vai adicionar tudo na lista
+                    lista.Add(filme);
+                }
 
 
+                //e retornar a lista.
+                return lista;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                Desconectar();
+            }
+
+
+        }
+
+        public List<ClassificacaoDTO> LoadDLLClassificacao()
+
+        {
+            try
+            {
+                Conectar();
+
+                cmd = new SqlCommand("SELECT * FROM Classificacao;", conn);
+                dr = cmd.ExecuteReader();
+
+                List<ClassificacaoDTO> lista = new List<ClassificacaoDTO>();
+                while (dr.Read())
+                {
+                    ClassificacaoDTO classificacao = new ClassificacaoDTO();
+                    classificacao.IdClassificacao = Convert.ToInt32(dr["IdClassificacao"]);
+                    classificacao.DescricaoClassificacao = Convert.ToString(dr["DescricaoClassificacao"]);
+                    lista.Add(classificacao);
+                }
+                return lista;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                Desconectar();
+            }
+        }
+
+        public List<GeneroDTO> LoadDLLGenero()
+
+        {
+            try
+            {
+                Conectar();
+
+                cmd = new SqlCommand("SELECT * FROM Genero;", conn);
+                dr = cmd.ExecuteReader();
+
+                List<GeneroDTO> lista = new List<GeneroDTO>();
+                while (dr.Read())
+                {
+                    GeneroDTO genero = new GeneroDTO();
+                    genero.IdGenero = Convert.ToInt32(dr["IdGenero"]);
+                    genero.DescricaoGenero = Convert.ToString(dr["DescricaoGenero"]);
+                    lista.Add(genero);
+                }
+                return lista;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                Desconectar();
+            }
+        }
     }
 }

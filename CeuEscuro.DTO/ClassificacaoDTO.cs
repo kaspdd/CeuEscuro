@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CeuEscuro.DTO
 {
-    internal class ClassificacaoDTO
+    public  class ClassificacaoDTO
     {
+        public int IdClassificacao { get; set; }
+        public string DescricaoClassificacao { get; set; }
+        
     }
 }
