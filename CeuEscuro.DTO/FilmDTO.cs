@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace CeuEscuro.DTO
 {
-    internal class FilmDTO
+    public class FilmDTO
     {
+        public int idFilm { get; set; }
+        public string TituloFilm { get; set; }
+        public string ProdutoraFilm { get; set; }
+        public string UrlImgFilm { get; set; }
+        public string Classificacao_Id { get; set; }
+        public string Genero_Id { get; set; }
     }
 }

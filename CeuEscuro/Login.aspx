@@ -19,7 +19,7 @@
                     <asp:TextBox ID="txtSenhaUsuario" placeholder="Senha:" MaxLength="6" runat="server"></asp:TextBox>
                 </li>
                 <li>
-                    <asp:Button ID="btnEntrar" runat="server" Text="Logar" OnClick="btnEntrar_Click"/>
+                    <asp:Button ID="btnEntrar" runat="server" Text="Logar" OnClick="btnEntrar_Click"/> 
                     <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" />
                 </li>
                 <li>

@@ -17,10 +17,9 @@ namespace CeuEscuro
         {
 
         }
-
+        //entrar
         protected void btnEntrar_Click(object sender, EventArgs e)
         {
-            // o .Trim() serve para nao pegar os espacos antes e depois do nome digitado, somente o nome.
             string nome = txtNomeUsuario.Text.Trim();
             string senha = txtSenhaUsuario.Text.Trim();
 
@@ -28,12 +27,22 @@ namespace CeuEscuro
 
             if (usuario != null)
             {
-                lblMessage.Text = $"Usuario {nome} seu acesso foi liberado!!";
-
+                switch (usuario.TipoUsuario_Id)
+                {
+                    case "1":
+                        Session["Usuario"] = usuario.NomeUsuario.Trim();
+                        Response.Redirect("adm/ManagerUser.aspx");
+                        break;
+                    case "2":
+                        Session["Usuario"] = usuario.NomeUsuario.Trim();
+                        Response.Redirect("user/ConsultaUser.aspx");
+                        break;
+                }
             }
             else
             {
-                lblMessage.Text = $"Usuario {nome} nao cadastrado!";
+                lblMessage.Text = $"Usuário {txtNomeUsuario.Text.Trim()} não cadastrado";
+                txtNomeUsuario.Text = string.Empty;
             }
 
         }
